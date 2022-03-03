@@ -1,19 +1,18 @@
 package com.naziksoft.guitartools.di
 
-import android.util.Log
-import com.naziksoft.guitartools.repository.RemoteApi
+import com.naziksoft.guitartools.api.RemoteApi
+import com.naziksoft.guitartools.utils.Constants.BASE_URL
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
-import dagger.hilt.android.components.FragmentComponent
+import dagger.hilt.components.SingletonComponent
 import okhttp3.OkHttpClient
-import okhttp3.internal.tls.OkHostnameVerifier
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 @Module
-@InstallIn(FragmentComponent::class)
+@InstallIn(SingletonComponent::class)
 class Module {
 
     @Provides
@@ -31,5 +30,3 @@ class Module {
             .create(RemoteApi::class.java)
     }
 }
-
-private const val BASE_URL = "http://www.songsterr.com"
