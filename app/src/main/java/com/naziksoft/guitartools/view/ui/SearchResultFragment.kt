@@ -7,7 +7,6 @@ import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.DividerItemDecoration.VERTICAL
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -15,16 +14,19 @@ import com.naziksoft.guitartools.R
 import com.naziksoft.guitartools.view.adapters.SongsAdapter
 import com.naziksoft.guitartools.databinding.FragmentSearchResultBinding
 import com.naziksoft.guitartools.models.Song
+import com.naziksoft.guitartools.utils.Constants.EXTRA_SEARCHING_REQUEST
+import com.naziksoft.guitartools.utils.Constants.EXTRA_SONGS_LIST
 import com.naziksoft.guitartools.viewmodel.SearchResultViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class SearchResultFragment : Fragment() {
 
-    private val request = "Marley"
+    private val request by lazy { requireArguments().getString(EXTRA_SEARCHING_REQUEST) }
+    private val songs by lazy { requireArguments().getSerializable(EXTRA_SONGS_LIST) as List<Song> }
+
     private lateinit var viewBinding: FragmentSearchResultBinding
     private val viewModel: SearchResultViewModel by viewModels()
-    private val adapter = SongsAdapter()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         viewBinding = FragmentSearchResultBinding.inflate(layoutInflater)
@@ -38,19 +40,13 @@ class SearchResultFragment : Fragment() {
         decorator.setDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.item_decorator)!!)
 
         with(viewBinding) {
-            recyclerView.layoutManager = LinearLayoutManager(requireContext())
-            recyclerView.addItemDecoration(decorator)
-            recyclerView.adapter = adapter
+            query.text = request
+
+            recyclerView.apply {
+                layoutManager = LinearLayoutManager(requireContext())
+                addItemDecoration(decorator)
+                adapter = SongsAdapter(viewModel).also { it.setData(songs) }
+            }
         }
-        setupObservers()
-
-        viewModel.search(request)
-    }
-
-    private fun setupObservers() {
-        viewModel.getSongs().observe(viewLifecycleOwner, Observer<List<Song>> {
-            adapter.songs = it
-            adapter.notifyDataSetChanged()
-        })
     }
 }

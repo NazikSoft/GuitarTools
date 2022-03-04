@@ -1,34 +1,16 @@
 package com.naziksoft.guitartools.viewmodel
 
-import android.util.Log
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
+import android.view.View
+import androidx.core.os.bundleOf
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import androidx.navigation.findNavController
+import com.naziksoft.guitartools.R
 import com.naziksoft.guitartools.models.Song
-import com.naziksoft.guitartools.repository.GuitarToolsRepository
-import com.naziksoft.guitartools.utils.Constants.TAG
-import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.launch
-import javax.inject.Inject
+import com.naziksoft.guitartools.utils.Constants.EXTRA_SONG
 
-@HiltViewModel
-class SearchResultViewModel
-@Inject constructor(private val repository: GuitarToolsRepository) : ViewModel() {
+class SearchResultViewModel : ViewModel() {
 
-    private val songs: MutableLiveData<List<Song>> by lazy { MutableLiveData<List<Song>>() }
-
-    fun getSongs(): LiveData<List<Song>> = songs
-
-    fun search(query: String) {
-        viewModelScope.launch {
-            repository.search(query).let {response->
-                if (response.isSuccessful) {
-                    songs.postValue(response.body())
-                } else {
-                    Log.d(TAG, response.message())
-                }
-            }
-        }
+    fun onItemClicked(view: View, song: Song) {
+        view.findNavController().navigate(R.id.action_searchResultFragment_to_webViewFragment, bundleOf(EXTRA_SONG to song))
     }
 }

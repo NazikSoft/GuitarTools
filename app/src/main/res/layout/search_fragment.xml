@@ -23,12 +23,21 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/button"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/recyclerView"
         android:layout_marginBottom="16dp"
-        android:textSize="18sp"
-        tools:text="Bob Marley"/>
+        android:hint="Search..."
+        android:textSize="18sp"/>
 
+    <Button
+        android:id="@+id/button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Find"
+        app:layout_constraintTop_toTopOf="@id/inputField"
+        app:layout_constraintBottom_toBottomOf="@id/inputField"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/inputField"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

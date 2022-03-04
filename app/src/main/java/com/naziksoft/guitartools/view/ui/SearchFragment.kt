@@ -34,14 +34,16 @@ class SearchFragment : Fragment() {
         val decorator = DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL)
         decorator.setDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.item_decorator)!!)
 
-        with(viewBinding.recyclerView) {
-            layoutManager = LinearLayoutManager(requireContext())
-            addItemDecoration(decorator)
-            adapter = this@SearchFragment.adapter
-        }
-
-        viewBinding.inputField.addTextChangedListener {
-            viewModel.onTextChanged(it.toString())
+        with(viewBinding) {
+            recyclerView.apply {
+                layoutManager = LinearLayoutManager(requireContext())
+                addItemDecoration(decorator)
+                adapter = this@SearchFragment.adapter
+            }
+            inputField.addTextChangedListener {
+                viewModel.onTextChanged(it.toString())
+            }
+            button.setOnClickListener { viewModel.onButtonClicked(button) }
         }
 
         viewModel.getFoundedItems().observe(
