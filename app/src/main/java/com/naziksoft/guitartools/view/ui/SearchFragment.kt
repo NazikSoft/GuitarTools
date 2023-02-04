@@ -1,26 +1,24 @@
 package com.naziksoft.guitartools.view.ui
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.core.widget.addTextChangedListener
-import androidx.fragment.app.viewModels
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.naziksoft.guitartools.R
 import com.naziksoft.guitartools.databinding.SearchFragmentBinding
 import com.naziksoft.guitartools.view.adapters.SearchPreviewAdapter
 import com.naziksoft.guitartools.viewmodel.SearchViewModel
-import dagger.hilt.android.AndroidEntryPoint
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
-@AndroidEntryPoint
 class SearchFragment : Fragment() {
 
     private lateinit var viewBinding: SearchFragmentBinding
-    private val viewModel: SearchViewModel by viewModels()
+    private val viewModel: SearchViewModel by viewModel()
     private val adapter = SearchPreviewAdapter()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {

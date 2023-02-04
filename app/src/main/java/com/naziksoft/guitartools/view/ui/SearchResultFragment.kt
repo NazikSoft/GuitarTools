@@ -17,16 +17,15 @@ import com.naziksoft.guitartools.models.Song
 import com.naziksoft.guitartools.utils.Constants.EXTRA_SEARCHING_REQUEST
 import com.naziksoft.guitartools.utils.Constants.EXTRA_SONGS_LIST
 import com.naziksoft.guitartools.viewmodel.SearchResultViewModel
-import dagger.hilt.android.AndroidEntryPoint
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
-@AndroidEntryPoint
 class SearchResultFragment : Fragment() {
 
     private val request by lazy { requireArguments().getString(EXTRA_SEARCHING_REQUEST) }
     private val songs by lazy { requireArguments().getSerializable(EXTRA_SONGS_LIST) as List<Song> }
 
     private lateinit var viewBinding: FragmentSearchResultBinding
-    private val viewModel: SearchResultViewModel by viewModels()
+    private val viewModel: SearchResultViewModel by viewModel()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         viewBinding = FragmentSearchResultBinding.inflate(layoutInflater)

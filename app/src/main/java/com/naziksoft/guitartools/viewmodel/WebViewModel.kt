@@ -1,30 +1,17 @@
 package com.naziksoft.guitartools.viewmodel
 
-import android.text.Html
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MediatorLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.MutableLiveData
 import com.naziksoft.guitartools.models.Song
 import com.naziksoft.guitartools.repository.GuitarToolsRepository
-import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.launch
-import javax.inject.Inject
+import com.naziksoft.guitartools.utils.Dispatchers
 
-@HiltViewModel
-class WebViewModel @Inject constructor(private val repository: GuitarToolsRepository) : ViewModel() {
+class WebViewModel (private val repository: GuitarToolsRepository) : BaseViewModel() {
 
-    private val html: MediatorLiveData<String> by lazy { MediatorLiveData() }
+    private val html: MutableLiveData<String> by lazy { MutableLiveData() }
 
     fun loadSong(song: Song) {
-        viewModelScope.launch {
-            repository.getSong(song.id).let { response ->
-                if (response.isSuccessful) {
-                    val data = response.body()!!.string()
-                    html.postValue(data)
-                }
-            }
-        }
+        runCoroutine(Dispatchers.io()) { repository.getSong(song.id).onSuccess { html.postValue(it.body()!!.string()) } }
     }
 
     fun getHtml(): LiveData<String> = html
